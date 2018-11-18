@@ -36,14 +36,14 @@ func main() {
 			}
 		}
 	} else {
-		today, err := currentMenuDay()
+		today, err := nextMenuDay()
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
 		if today == nil {
-			fmt.Println("No service today.")
+			fmt.Println("No service to display.")
 			return
 		}
 
@@ -54,7 +54,7 @@ func main() {
 	}
 }
 
-func currentMenuDay() (*parigo.Day, error) {
+func nextMenuDay() (*parigo.Day, error) {
 	menu, err := parigo.Current()
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func currentMenuDay() (*parigo.Day, error) {
 	today := time.Date(year, month, day, 0, 0, 0, 0, now.Location())
 
 	for _, day := range menu.Days {
-		if day.Time.Equal(today) {
+		if day.Time.Equal(today) || day.Time.After(today) {
 			return day, nil
 		}
 	}
