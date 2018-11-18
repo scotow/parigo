@@ -90,7 +90,11 @@ func displayDay(day *parigo.Day) error {
 	table.SetHeaderColor(tablewriter.Colors{tablewriter.Bold})
 
 	for _, part := range meal.Parts {
-		table.Append([]string{strings.Join(part.Plates, "\n")})
+		plates := make([]string, len(part.Plates))
+		for i, plate := range part.Plates {
+			plates[i] = strings.Title(plate)
+		}
+		table.Append([]string{strings.Join(plates, "\n")})
 	}
 
 	table.Render()
