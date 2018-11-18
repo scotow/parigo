@@ -16,7 +16,7 @@ var (
 )
 
 var (
-	errTooManyMeal = errors.New("can only display menu if there is only one meal.")
+	errTooManyMeal = errors.New("can only display menu if there is only one meal")
 )
 
 func main() {
