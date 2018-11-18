@@ -3,7 +3,6 @@ package parigo
 import (
 	"errors"
 	"github.com/PuerkitoBio/goquery"
-	"log"
 	"net/http"
 )
 
@@ -32,10 +31,25 @@ func Current() (menu *Menu, err error) {
 	return
 }
 
-func NewMenu(selection *goquery.Selection) (*Menu, error) {
-	
+func NewMenu(s *goquery.Selection) (menu *Menu, err error) {
+	days := make([]*Day, 0, 5)
+
+	s.ChildrenFiltered("li").Each(func(_ int, s *goquery.Selection) {
+		day, ed := NewDay(s)
+		if ed != nil {
+			err = ed
+			return
+		}
+		days = append(days, day)
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &Menu{days}, nil
 }
 
 type Menu struct {
-	Days []*Day
+	Days []*Day `json:"days"`
 }
